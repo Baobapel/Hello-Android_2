@@ -1,55 +1,75 @@
 package ru.netology.myapplication_2
 
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import ru.netology.myapplication_2.databinding.NetologyMainBinding
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.i("###", "onCreate")
         setContentView(R.layout.netology_main)
         val binding = NetologyMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val post = Post(
-            id = 1,
-            author = "Нетология. Университет интернет-профессий будущего",
-            content = "Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, аналитике и управлению. Мы растём сами и помогаем расти студентам: от новичков до уверенных профессионалов. Но самое важное остаётся с нами: мы верим, что в каждом уже есть сила, которая заставляет хотеть больше, целиться выше, бежать быстрее. Наша миссия — помочь встать на путь роста и начать цепочку перемен → http://netolo.gy/fyb",
-            published = "21 мая в 18:36"
-        )
 
-
-        with(binding) {
-            author.text = post.author
-            published.text = post.published
-            content.text = post.content
-            tvLikes.text = Utils.formatNumber(post.likes)
-            tvShares.text = Utils.formatNumber(post.share)
-            tvViews.text = Utils.formatNumber(post.views)
-
-            if (post.likedByMe) {
-                ivLikes.setImageResource(R.drawable.ic_liked_24)
-            } else ivLikes.setImageResource(R.drawable.ic_like_24)
-
-            ivLikes.setOnClickListener {
-                post.likedByMe = !post.likedByMe
+        val viewModel: PostViewModel by viewModels()
+        viewModel.getMyPost().observe(this) { post ->
+            with(binding) {
+                author.text = post.author
+                published.text = post.published
+                content.text = post.content
+                tvLikes.text = Utils.formatNumber(post.likes)
+                tvShares.text = Utils.formatNumber(post.share)
+                tvViews.text = Utils.formatNumber(post.views)
                 ivLikes.setImageResource(
                     if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_24
                 )
-                if (post.likedByMe) post.likes++ else post.likes--
-                tvLikes.text = Utils.formatNumber(post.likes)
 
-            }
+                ivLikes.setOnClickListener {
+                    viewModel.likeMyPost()
+                }
 
-            ivShare.setOnClickListener {
-                post.share++
-                tvShares.text = Utils.formatNumber(post.share)
-            }
+                ivShare.setOnClickListener {
+                    viewModel.shareMyPost()
+                }
 
-            ivViews.setOnClickListener {
-                post.views++
-                tvViews.text = Utils.formatNumber(post.views)
+                ivViews.setOnClickListener {
+                    viewModel.viewMyPost()
+                }
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        Log.i("###", "onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        Log.i("###", "onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        Log.i("###", "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        Log.i("###", "onStop")
+    }
+
+    override fun onDestroy() {
+        Log.i("###", "onDestroy")
+        super.onDestroy()
+
     }
 }
