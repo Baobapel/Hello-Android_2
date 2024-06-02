@@ -40,7 +40,19 @@ android {
 }
 
 dependencies {
-
+    val lifecycle_version = "2.8.1"
+    val arch_version = "2.2.0"
+    val activity_version = "1.7.0"
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    // ViewModel utilities for Compose
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+    // LiveData
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    // optional - Test helpers for LiveData
+    testImplementation("androidx.arch.core:core-testing:$arch_version")
+    // Lifecycles only (without ViewModel or LiveData)
+    implementation ("androidx.activity:activity-ktx:$activity_version")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
